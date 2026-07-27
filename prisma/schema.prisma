@@ -410,3 +410,61 @@ model ArticlePage {
 
   @@index([articleId])
 }
+
+model SiteCtaConfig {
+  id                 String   @id @default(cuid())
+  primaryTitle       String?  @default("Sẵn sàng nâng tầm năng lực lãnh đạo và giao tiếp cùng Võ Thị Mỹ Duyên?")
+  primaryDesc        String?  @default("Duyên đồng hành cùng cá nhân và doanh nghiệp kiến tạo đội ngũ, truyền cảm hứng và phát triển bền vững.")
+  primaryBtn1Label   String?  @default("KẾT NỐI VỚI DUYÊN")
+  primaryBtn1Href    String?  @default("#")
+  primaryBtn2Label   String?  @default("MỜI DIỄN GIẢ")
+  primaryBtn2Href    String?  @default("/dien-gia")
+  secondaryTitle     String?  @default("SẴN SÀNG HỢP TÁC & TẠO RA GIÁ TRỊ?")
+  secondaryDesc      String?  @default("Duyên luôn sẵn sàng lắng nghe và đồng hành cùng bạn hoặc tổ chức.")
+  secondaryBtnLabel  String?  @default("KẾT NỐI VỚI DUYÊN")
+  secondaryBtnHref   String?  @default("#")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model EventsConfig {
+  id        String      @id @default(cuid())
+  titleVi   String?     @default("HOẠT ĐỘNG & SỰ KIỆN")
+  titleEn   String?     @default("ACTIVITIES & EVENTS")
+  items     EventItem[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model EventItem {
+  id             String       @id @default(cuid())
+  slug           String       @unique
+  categoryVi     String?
+  categoryEn     String?
+  titleVi        String
+  titleEn        String?
+  excerptVi      String?
+  excerptEn      String?
+  coverImg       String?
+  eventDate      String?
+  eventTime      String?
+  authorName     String?      @default("ThS. Võ Thị Mỹ Duyên")
+  authorRole     String?      @default("International Expert & Speaker")
+  authorAvatar   String?
+  authorBio      String?      @db.Text
+  metaTitle      String?
+  metaDescription String?
+  ctaLabel       String?      @default("TÌM HIỂU THÊM")
+  ctaHref        String?      @default("#")
+  readTime       String?      @default("5 phút đọc")
+  contentHtmlVi  String?      @db.Text
+  contentHtmlEn  String?      @db.Text
+  published      Boolean?     @default(true)
+  order          Int?         @default(0)
+  eventsConfigId String
+  eventsConfig   EventsConfig @relation(fields: [eventsConfigId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([eventsConfigId])
+}

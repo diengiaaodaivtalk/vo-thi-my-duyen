@@ -8,6 +8,7 @@ import { PublishedArticles } from "@/app/(public)/(home)/_components/PublishedAr
 import { ConnectAndTraining } from "@/app/(public)/(home)/_components/ConnectAndTraining";
 import { ActivityHighlights } from "@/app/(public)/(home)/_components/ActivityHighlights";
 import { StrategicClients } from "@/app/(public)/(home)/_components/StrategicClients";
+import { Events } from "@/app/(public)/(home)/_components/Events";
 
 export default function Home() {
   return (
@@ -34,6 +35,7 @@ export default function Home() {
       <div id="clients">
         <StrategicClients />
       </div>
+      <Events />
     </div>
   );
 }

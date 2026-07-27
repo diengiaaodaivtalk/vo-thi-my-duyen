@@ -13,6 +13,7 @@ import {
   Undo2,
   LayoutDashboard,
   Form,
+  CalendarDays,
 } from "lucide-react";
 
 interface AdminLayoutProps {
@@ -51,6 +52,11 @@ const NAV_ITEMS = [
     label: "Quản trị Form",
     href: "/admin/form-settings",
     icon: Form,
+  },
+  {
+    label: "Quản trị phần Hoạt động & Sự kiện trong Trang chủ",
+    href: "/admin/events",
+    icon: CalendarDays,
   },
 ];
 

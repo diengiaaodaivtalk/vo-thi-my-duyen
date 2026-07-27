@@ -1,13 +1,13 @@
 import { MetadataRoute } from "next";
 
-export default function robots(): MetadataRoute.Robots {
-  const siteUrl = "https://www.vothimyduyen.com";
+const siteUrl = "https://www.vothimyduyen.com";
 
+export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: "/admin/",
+      disallow: ["/admin", "/admin/"],
     },
     sitemap: `${siteUrl}/sitemap.xml`,
   };
