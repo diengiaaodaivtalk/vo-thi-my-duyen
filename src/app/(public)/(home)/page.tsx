@@ -5,6 +5,7 @@ import { AreasOfExpertise } from "@/app/(public)/(home)/_components/AreasOfExper
 import { Services } from "@/app/(public)/(home)/_components/Services";
 import { ConnectionsAndMedia } from "@/app/(public)/(home)/_components/ConnectionsAndMedia";
 import { PublishedArticles } from "@/app/(public)/(home)/_components/PublishedArticles";
+import { Recommendations } from "@/app/(public)/(home)/_components/Recommendations";
 import { ConnectAndTraining } from "@/app/(public)/(home)/_components/ConnectAndTraining";
 import { ActivityHighlights } from "@/app/(public)/(home)/_components/ActivityHighlights";
 import { StrategicClients } from "@/app/(public)/(home)/_components/StrategicClients";
@@ -26,6 +27,7 @@ export default function Home() {
         <ConnectionsAndMedia />
       </div>
       <PublishedArticles />
+      <Recommendations />
       <div id="contact">
         <ConnectAndTraining />
       </div>

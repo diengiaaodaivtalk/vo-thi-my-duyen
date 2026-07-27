@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save, Upload, ExternalLink } from "lucide-react";
 import { RichTextEditor } from "./RichTextEditor";
-import { AvatarCropper } from "./AvatarCropper";
+import { AvatarCropper } from "../../../_components/AvatarCropper";
 import { updateEventAction } from "../../actions";
 import type { EventItemParam } from "../../types";
 
