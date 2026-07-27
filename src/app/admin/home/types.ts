@@ -38,6 +38,17 @@ export interface ServiceItemParam {
   imageFile?: File | null;
 }
 
+export interface RecommendationItemParam {
+  id?: string;
+  name: string | null;
+  roleLine1: string | null;
+  roleLine2: string | null;
+  timeAgo: string | null;
+  quote: string | null;
+  avatar: string | null;
+  imageFile?: File | null;
+}
+
 export interface CountryParam {
   id?: string;
   vi: string;

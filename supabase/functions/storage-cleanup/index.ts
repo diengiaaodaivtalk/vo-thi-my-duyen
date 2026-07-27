@@ -55,6 +55,7 @@ const CLEANUP_CONFIG: CleanupConfig[] = [
   { bucket: "events-images", targets: [{ table: "EventItem", column: "coverImg" }] },
   { bucket: "events-content-images", targets: [{ table: "EventItem", column: "contentHtmlVi" }] },
   { bucket: "events-author-avatars", targets: [{ table: "EventItem", column: "authorAvatar" }] },
+  { bucket: "recommendation-avatars", targets: [{ table: "RecommendationItem", column: "avatar" }] },
 ];
 
 Deno.serve(async () => {

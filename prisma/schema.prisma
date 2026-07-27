@@ -184,6 +184,33 @@ model MediaPressItem {
   @@index([mediaConfigId])
 }
 
+model RecommendationsConfig {
+  id        String               @id @default(cuid())
+  titleVi   String?              @default("RECOMMENDATIONS")
+  subtitle  String?              @default("Chia sẻ từ Lãnh đạo, Đối tác & Cấp quản lý")
+  descVi    String?              @default("Không chỉ là cảm nhận từ học viên hay khách hàng, đây là những lời đánh giá từ các lãnh đạo, đối tác và quản lý từng đồng hành cùng Võ Thị Mỹ Duyên.")
+  items     RecommendationItem[]
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+}
+
+model RecommendationItem {
+  id                     String                 @id @default(cuid())
+  name                   String?
+  roleLine1              String?
+  roleLine2              String?
+  timeAgo                String?
+  quote                  String?                @db.Text
+  avatar                 String?
+  order                  Int?                   @default(0)
+  recommendationsConfigId String
+  recommendationsConfig  RecommendationsConfig  @relation(fields: [recommendationsConfigId], references: [id], onDelete: Cascade)
+  createdAt              DateTime               @default(now())
+  updatedAt              DateTime               @updatedAt
+
+  @@index([recommendationsConfigId])
+}
+
 model ConnectTrainingConfig {
   id               String            @id @default(cuid())
   trainingTitleVi  String?           @default("CHƯƠNG TRÌNH ĐÀO TẠO")

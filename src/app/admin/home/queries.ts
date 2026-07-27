@@ -1,44 +1,71 @@
 import { prisma } from "@/lib/prisma";
 
 export async function getAdminHomeData() {
-  const heroData = await prisma.heroConfig.findFirst({
-    include: { buttons: { orderBy: { order: "asc" } } },
-  });
-  const statsData = await prisma.stat.findMany({ orderBy: { order: "asc" } });
-  const profileData = await prisma.profileConfig.findFirst({
-    include: { items: { orderBy: { order: "asc" } } },
-  });
-  const expertiseConfig = await prisma.expertiseConfig.findFirst({
-    include: { items: { orderBy: { order: "asc" } } },
-  });
-  const servicesConfig = await prisma.servicesConfig.findFirst({
-    include: { items: { orderBy: { order: "asc" } } },
-  });
-  const mediaConfig = await prisma.mediaConfig.findFirst({
-    include: {
-      countries: { orderBy: { order: "asc" } },
-      highlights: { orderBy: { order: "asc" } },
-      tvStations: { orderBy: { order: "asc" } },
-      pressItems: { orderBy: { order: "asc" } },
-    },
-  });
-  const connectTrainingConfig = await prisma.connectTrainingConfig.findFirst({
-    include: {
-      programs: { orderBy: { order: "asc" } },
-      socials: { orderBy: { order: "asc" } },
-    },
-  });
-  const activityConfig = await prisma.activityConfig.findFirst({
-    include: { items: { orderBy: { order: "asc" } } },
-  });
-  const clientConfig = await prisma.clientConfig.findFirst({
-    include: {
-      tabs: {
-        orderBy: { order: "asc" },
-        include: { logos: { orderBy: { order: "asc" } } },
+  const [
+    heroData,
+    statsData,
+    profileData,
+    expertiseConfig,
+    servicesConfig,
+    mediaConfig,
+    connectTrainingConfig,
+    activityConfig,
+    clientConfig,
+    recommendationsConfig,
+    articlesConfig,
+    categories,
+    articles,
+  ] = await Promise.all([
+    prisma.heroConfig.findFirst({
+      include: { buttons: { orderBy: { order: "asc" } } },
+    }),
+    prisma.stat.findMany({ orderBy: { order: "asc" } }),
+    prisma.profileConfig.findFirst({
+      include: { items: { orderBy: { order: "asc" } } },
+    }),
+    prisma.expertiseConfig.findFirst({
+      include: { items: { orderBy: { order: "asc" } } },
+    }),
+    prisma.servicesConfig.findFirst({
+      include: { items: { orderBy: { order: "asc" } } },
+    }),
+    prisma.mediaConfig.findFirst({
+      include: {
+        countries: { orderBy: { order: "asc" } },
+        highlights: { orderBy: { order: "asc" } },
+        tvStations: { orderBy: { order: "asc" } },
+        pressItems: { orderBy: { order: "asc" } },
       },
-    },
-  });
+    }),
+    prisma.connectTrainingConfig.findFirst({
+      include: {
+        programs: { orderBy: { order: "asc" } },
+        socials: { orderBy: { order: "asc" } },
+      },
+    }),
+    prisma.activityConfig.findFirst({
+      include: { items: { orderBy: { order: "asc" } } },
+    }),
+    prisma.clientConfig.findFirst({
+      include: {
+        tabs: {
+          orderBy: { order: "asc" },
+          include: { logos: { orderBy: { order: "asc" } } },
+        },
+      },
+    }),
+    prisma.recommendationsConfig.findFirst({
+      include: { items: { orderBy: { order: "asc" } } },
+    }),
+    prisma.articlesConfig.findFirst(),
+    prisma.articleCategory.findMany({
+      orderBy: { order: "asc" },
+    }),
+    prisma.article.findMany({
+      orderBy: { order: "asc" },
+      include: { pages: { orderBy: { order: "asc" } } },
+    }),
+  ]);
 
   const sanitizedExpertiseData = expertiseConfig
     ? {
@@ -80,6 +107,26 @@ export async function getAdminHomeData() {
       }
     : null;
 
+  const sanitizedRecommendationsData = recommendationsConfig
+    ? {
+        id: recommendationsConfig.id,
+        titleVi: recommendationsConfig.titleVi || "RECOMMENDATIONS",
+        subtitle:
+          recommendationsConfig.subtitle ||
+          "Chia sẻ từ Lãnh đạo, Đối tác & Cấp quản lý",
+        descVi: recommendationsConfig.descVi || "",
+        items: recommendationsConfig.items.map((item) => ({
+          id: item.id,
+          name: item.name || "",
+          roleLine1: item.roleLine1 || "",
+          roleLine2: item.roleLine2 || "",
+          timeAgo: item.timeAgo || "",
+          quote: item.quote || "",
+          avatar: item.avatar || "",
+        })),
+      }
+    : null;
+
   const sanitizedMediaData = mediaConfig
     ? {
         id: mediaConfig.id,
@@ -112,15 +159,6 @@ export async function getAdminHomeData() {
         })),
       }
     : null;
-
-  const articlesConfig = await prisma.articlesConfig.findFirst();
-  const categories = await prisma.articleCategory.findMany({
-    orderBy: { order: "asc" },
-  });
-  const articles = await prisma.article.findMany({
-    orderBy: { order: "asc" },
-    include: { pages: { orderBy: { order: "asc" } } },
-  });
 
   const mapArticle = (a: (typeof articles)[number]) => ({
     id: a.id,
@@ -212,6 +250,7 @@ export async function getAdminHomeData() {
     profileData,
     sanitizedExpertiseData,
     sanitizedServicesData,
+    sanitizedRecommendationsData,
     sanitizedArticlesData,
     sanitizedMediaData,
     sanitizedConnectTrainingData,

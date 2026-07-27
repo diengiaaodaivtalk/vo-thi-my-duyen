@@ -23,8 +23,10 @@ import {
   updateActivityAction,
   updateClientsAction,
   updateArticlesAction,
+  updateRecommendationsAction,
 } from "./actions";
 import { ArticlesForm } from "./_components/ArticlesForm";
+import { RecommendationsForm } from "./_components/RecommendationsForm";
 
 export default async function HomeAdminPage() {
   const supabase = await createClient();
@@ -42,6 +44,7 @@ export default async function HomeAdminPage() {
     profileData,
     sanitizedExpertiseData,
     sanitizedServicesData,
+    sanitizedRecommendationsData,
     sanitizedArticlesData,
     sanitizedMediaData,
     sanitizedConnectTrainingData,
@@ -62,6 +65,10 @@ export default async function HomeAdminPage() {
         <ServicesForm
           initialData={sanitizedServicesData}
           onSave={updateServicesAction}
+        />
+        <RecommendationsForm
+          initialData={sanitizedRecommendationsData}
+          onSave={updateRecommendationsAction}
         />
         <ConnectionsAndMediaForm
           initialData={sanitizedMediaData}
