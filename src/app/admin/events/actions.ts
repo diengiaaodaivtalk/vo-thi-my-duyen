@@ -5,11 +5,11 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { slugify } from "@/lib/slugify";
 import { uploadAndCleanStorage } from "@/utils/supabase/storage";
-import DOMPurify from "isomorphic-dompurify";
+import sanitizeHtml from "sanitize-html";
 
 function sanitizeContent(html: string) {
-  return DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: [
+  return sanitizeHtml(html, {
+    allowedTags: [
       "p",
       "h2",
       "h3",
@@ -26,7 +26,11 @@ function sanitizeContent(html: string) {
       "img",
       "br",
     ],
-    ALLOWED_ATTR: ["href", "src", "alt", "class", "style", "target", "rel"],
+    allowedAttributes: {
+      a: ["href", "target", "rel"],
+      img: ["src", "alt"],
+      "*": ["class", "style"],
+    },
   });
 }
 
