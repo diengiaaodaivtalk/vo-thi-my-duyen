@@ -58,6 +58,16 @@ export function PublishedArticlesClient({
   const getCategoryLabel = (categoryId: string) =>
     categories.find((c) => c.id === categoryId)?.vi || "";
 
+  const handleReadArticle = (article: Article) => {
+    if (!article.pages || article.pages.length === 0) {
+      if (article.link) {
+        window.open(article.link, "_blank", "noopener,noreferrer");
+      }
+      return;
+    }
+    setActiveArticle(article);
+  };
+
   return (
     <section className="w-full bg-[#fbfbfa] px-6 lg:px-16 py-12 lg:py-16 overflow-hidden">
       <div className="mx-auto relative mb-8 lg:mb-10">
@@ -112,13 +122,13 @@ export function PublishedArticlesClient({
           key={`row1-${selectedCategory}`}
           articles={filteredRow1}
           getCategoryLabel={getCategoryLabel}
-          onRead={setActiveArticle}
+          onRead={handleReadArticle}
         />
         <ArticleCarouselRow
           key={`row2-${selectedCategory}`}
           articles={filteredRow2}
           getCategoryLabel={getCategoryLabel}
-          onRead={setActiveArticle}
+          onRead={handleReadArticle}
         />
       </div>
 

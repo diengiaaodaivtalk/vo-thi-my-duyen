@@ -23,8 +23,8 @@ export async function getPublishedArticlesData() {
   });
 
   return {
-    titleVi: config?.titleVi || "CÁC BÀI VIẾT ĐÃ XUẤT BẢN",
-    titleEn: config?.titleEn || "Published Articles",
+    titleVi: config?.titleVi || "",
+    titleEn: config?.titleEn || "",
     descVi: config?.descVi || "",
     descEn: config?.descEn || "",
     categories: categories.map((c) => ({
