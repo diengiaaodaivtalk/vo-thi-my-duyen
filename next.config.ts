@@ -2,7 +2,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  serverExternalPackages: ["isomorphic-dompurify", "jsdom"],
+  serverExternalPackages: [
+    "isomorphic-dompurify",
+    "jsdom",
+    "@prisma/client",
+    "pg",
+  ],
   images: {
     remotePatterns: [
       {
