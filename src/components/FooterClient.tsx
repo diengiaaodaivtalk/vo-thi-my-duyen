@@ -95,7 +95,10 @@ export function FooterClient({ data }: FooterDataProps) {
   };
 
   return (
-    <footer className="w-full bg-[#0a1b35] text-white relative overflow-hidden pt-12 pb-6 border-t border-[#c29b57]/20">
+    <footer
+      id="footer"
+      className="w-full bg-[#0a1b35] text-white relative overflow-hidden pt-12 pb-6 border-t border-[#c29b57]/20"
+    >
       <div className="absolute right-0 bottom-0 w-1/3 h-full opacity-10 pointer-events-none select-none hidden lg:block">
         <svg viewBox="0 0 400 400" fill="none" className="w-full h-full">
           <path

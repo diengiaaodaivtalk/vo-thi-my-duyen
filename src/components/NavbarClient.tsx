@@ -38,7 +38,10 @@ export function NavbarClient({
   const [language, setLanguage] = useState<"VI" | "EN">("VI");
 
   return (
-    <nav className="w-full bg-[#fbfbfa] sticky top-0 z-50 border-b border-[#e2d5c3]">
+    <nav
+      id="navbar"
+      className="w-full bg-[#fbfbfa] sticky top-0 z-50 border-b border-[#e2d5c3]"
+    >
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-24 gap-2 xl:gap-4">
           <Link

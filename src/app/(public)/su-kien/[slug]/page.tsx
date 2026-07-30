@@ -269,14 +269,12 @@ export default async function EventDetailPage({
             <div className="flex flex-col sm:flex-col items-center gap-3 w-full md:w-auto z-10 shrink-0 min-w-50">
               <Link
                 href={cta.primaryBtn1Href || "#"}
-                target="_blank"
                 className="w-full inline-flex items-center justify-center gap-2 bg-[#c29b57] text-white px-6 py-3 rounded-lg text-xs font-bold hover:bg-[#a88344] transition-colors uppercase tracking-wider"
               >
                 {cta.primaryBtn1Label}
               </Link>
               <Link
                 href={cta.primaryBtn2Href || "#"}
-                target="_blank"
                 className="w-full inline-flex items-center justify-center gap-2 bg-white text-[#0a1b35] border border-gray-300 px-6 py-3 rounded-lg text-xs font-bold hover:bg-[#fbfaf7] transition-colors uppercase tracking-wider"
               >
                 {cta.primaryBtn2Label}
@@ -301,7 +299,6 @@ export default async function EventDetailPage({
 
             <Link
               href={cta.secondaryBtnHref || "#"}
-              target="_blank"
               className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-[#d2b174] text-[#0a1b35] px-6 py-3 rounded-lg text-xs font-bold hover:bg-[#c29b57] transition-colors shrink-0 uppercase tracking-wider"
             >
               {cta.secondaryBtnLabel}
