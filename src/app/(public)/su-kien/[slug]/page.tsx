@@ -11,6 +11,9 @@ import { getSiteCtaConfig } from "@/app/admin/events/queries";
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://www.vothimyduyen.com";
 
+export const dynamicParams = true;
+export const revalidate = 60;
+
 export async function generateMetadata({
   params,
 }: {
