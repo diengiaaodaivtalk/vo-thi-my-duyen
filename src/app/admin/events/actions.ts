@@ -5,6 +5,30 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { slugify } from "@/lib/slugify";
 import { uploadAndCleanStorage } from "@/utils/supabase/storage";
+import DOMPurify from "isomorphic-dompurify";
+
+function sanitizeContent(html: string) {
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: [
+      "p",
+      "h2",
+      "h3",
+      "span",
+      "strong",
+      "em",
+      "u",
+      "s",
+      "a",
+      "ul",
+      "ol",
+      "li",
+      "blockquote",
+      "img",
+      "br",
+    ],
+    ALLOWED_ATTR: ["href", "src", "alt", "class", "style", "target", "rel"],
+  });
+}
 
 async function ensureConfig() {
   const existing = await prisma.eventsConfig.findFirst();
@@ -141,8 +165,8 @@ export async function updateEventAction(
       authorBio: input.authorBio,
       readTime: input.readTime,
       published: input.published,
-      contentHtmlVi: input.contentHtmlVi,
-      contentHtmlEn: input.contentHtmlEn,
+      contentHtmlVi: sanitizeContent(input.contentHtmlVi),
+      contentHtmlEn: sanitizeContent(input.contentHtmlEn),
       metaTitle: input.metaTitle,
       metaDescription: input.metaDescription,
       ctaLabel: input.ctaLabel,
