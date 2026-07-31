@@ -55,41 +55,63 @@ export default async function HomeAdminPage() {
   return (
     <AdminLayout userEmail={user?.email} logoutAction={logout}>
       <div className="space-y-10">
-        <HeroForm initialData={heroData} onSave={updateHeroAction} />
-        <StatsForm initialData={statsData} onSave={updateStatsAction} />
-        <ProfileForm initialData={profileData} onSave={updateProfileAction} />
-        <ExpertiseForm
-          initialData={sanitizedExpertiseData}
-          onSave={updateExpertiseAction}
-        />
-        <ServicesForm
-          initialData={sanitizedServicesData}
-          onSave={updateServicesAction}
-        />
-        <RecommendationsForm
-          initialData={sanitizedRecommendationsData}
-          onSave={updateRecommendationsAction}
-        />
-        <ConnectionsAndMediaForm
-          initialData={sanitizedMediaData}
-          onSave={updateMediaAction}
-        />
-        <ArticlesForm
-          initialData={sanitizedArticlesData}
-          onSave={updateArticlesAction}
-        />
-        <ConnectAndTrainingForm
-          initialData={sanitizedConnectTrainingData}
-          onSave={updateConnectTrainingAction}
-        />
-        <ActivityHighlightsForm
-          initialData={sanitizedActivityData}
-          onSave={updateActivityAction}
-        />
-        <StrategicClientsForm
-          initialData={sanitizedClientsData}
-          onSave={updateClientsAction}
-        />
+        <section id="hero-section">
+          <HeroForm initialData={heroData} onSave={updateHeroAction} />
+        </section>
+        <section id="stats-section">
+          <StatsForm initialData={statsData} onSave={updateStatsAction} />
+        </section>
+        <section id="profile-section">
+          <ProfileForm initialData={profileData} onSave={updateProfileAction} />
+        </section>
+        <section id="expertise-section">
+          <ExpertiseForm
+            initialData={sanitizedExpertiseData}
+            onSave={updateExpertiseAction}
+          />
+        </section>
+        <section id="services-section">
+          <ServicesForm
+            initialData={sanitizedServicesData}
+            onSave={updateServicesAction}
+          />
+        </section>
+        <section id="recommendations-section">
+          <RecommendationsForm
+            initialData={sanitizedRecommendationsData}
+            onSave={updateRecommendationsAction}
+          />
+        </section>
+        <section id="media-section">
+          <ConnectionsAndMediaForm
+            initialData={sanitizedMediaData}
+            onSave={updateMediaAction}
+          />
+        </section>
+        <section id="articles-section">
+          <ArticlesForm
+            initialData={sanitizedArticlesData}
+            onSave={updateArticlesAction}
+          />
+        </section>
+        <section id="connect-training-section">
+          <ConnectAndTrainingForm
+            initialData={sanitizedConnectTrainingData}
+            onSave={updateConnectTrainingAction}
+          />
+        </section>
+        <section id="activity-section">
+          <ActivityHighlightsForm
+            initialData={sanitizedActivityData}
+            onSave={updateActivityAction}
+          />
+        </section>
+        <section id="clients-section">
+          <StrategicClientsForm
+            initialData={sanitizedClientsData}
+            onSave={updateClientsAction}
+          />
+        </section>
       </div>
     </AdminLayout>
   );

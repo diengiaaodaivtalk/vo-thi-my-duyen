@@ -14,6 +14,8 @@ import {
   LayoutDashboard,
   Form,
   CalendarDays,
+  ChevronDown,
+  ChevronRight,
 } from "lucide-react";
 
 interface AdminLayoutProps {
@@ -37,6 +39,19 @@ const NAV_ITEMS = [
     label: "Quản trị Home",
     href: "/admin/home",
     icon: Home,
+    subItems: [
+      { label: "Hero Section", targetId: "hero-section" },
+      { label: "Stats Section", targetId: "stats-section" },
+      { label: "Hồ sơ nổi bật", targetId: "profile-section" },
+      { label: "Mảng chuyên môn", targetId: "expertise-section" },
+      { label: "Dịch vụ cung cấp", targetId: "services-section" },
+      { label: "Recommendations", targetId: "recommendations-section" },
+      { label: "Kết nối & Truyền thông", targetId: "media-section" },
+      { label: "Bài viết đã xuất bản", targetId: "articles-section" },
+      { label: "Đào tạo & Kết nối", targetId: "connect-training-section" },
+      { label: "Hình ảnh hoạt động", targetId: "activity-section" },
+      { label: "Đối tác & Khách hàng chiến lược", targetId: "clients-section" },
+    ],
   },
   {
     label: "Quản trị Header",
@@ -54,7 +69,7 @@ const NAV_ITEMS = [
     icon: Form,
   },
   {
-    label: "Quản trị phần Hoạt động & Sự kiện trong Trang chủ",
+    label: "Quản trị Hoạt động & Sự kiện",
     href: "/admin/events",
     icon: CalendarDays,
   },
@@ -66,11 +81,20 @@ export function AdminLayout({
   children,
 }: AdminLayoutProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isHomeExpanded, setIsHomeExpanded] = useState(true);
   const pathname = usePathname();
 
   const currentNav = NAV_ITEMS.find((item) => item.href === pathname);
   const pageTitle =
     currentNav && currentNav.href !== "/" ? currentNav.label : "Tổng quan";
+
+  const handleScrollToSection = (targetId: string) => {
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      setIsOpen(false);
+    }
+  };
 
   return (
     <div className="h-screen bg-gray-100 flex overflow-hidden relative">
@@ -105,20 +129,61 @@ export function AdminLayout({
             {NAV_ITEMS.map((item, index) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
+              const hasSubItems = Boolean(
+                item.subItems && item.subItems.length > 0,
+              );
 
               return (
-                <a
-                  key={index}
-                  href={item.href}
-                  className={`flex items-center gap-3 px-4 py-2.5 rounded font-medium transition-colors ${
-                    isActive
-                      ? "bg-white/10 text-white"
-                      : "text-white hover:bg-white/5"
-                  }`}
-                >
-                  <Icon size={18} />
-                  {item.label}
-                </a>
+                <div key={index} className="space-y-1">
+                  <div
+                    className={`flex items-center justify-between px-4 py-2.5 rounded font-medium transition-colors ${
+                      isActive
+                        ? "bg-white/10 text-white"
+                        : "text-white hover:bg-white/5"
+                    }`}
+                  >
+                    <a
+                      href={item.href}
+                      className="flex items-center gap-3 flex-1"
+                    >
+                      <Icon size={18} />
+                      {item.label}
+                    </a>
+
+                    {isActive && hasSubItems && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setIsHomeExpanded(!isHomeExpanded);
+                        }}
+                        className="p-2 hover:bg-white/10 rounded transition-colors text-gray-300 hover:text-white cursor-pointer"
+                      >
+                        {isHomeExpanded ? (
+                          <ChevronDown size={16} />
+                        ) : (
+                          <ChevronRight size={16} />
+                        )}
+                      </button>
+                    )}
+                  </div>
+
+                  {isActive && hasSubItems && isHomeExpanded && (
+                    <div className="pl-3 space-y-2 my-1">
+                      {item.subItems?.map((subItem, subIndex) => (
+                        <button
+                          key={subIndex}
+                          onClick={() =>
+                            handleScrollToSection(subItem.targetId)
+                          }
+                          className="block w-full text-left py-1.5 px-3 text-xs text-gray-300 hover:text-white hover:bg-white/5 rounded transition-colors cursor-pointer"
+                        >
+                          {subItem.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               );
             })}
           </nav>
