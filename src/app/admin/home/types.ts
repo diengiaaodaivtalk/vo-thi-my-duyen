@@ -150,3 +150,9 @@ export interface TabItemParam {
   en: string;
   logos: LogoItemParam[];
 }
+
+export interface CertificateItemParam {
+  id?: string;
+  img: string;
+  imageFile?: File | null;
+}

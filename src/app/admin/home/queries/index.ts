@@ -9,6 +9,7 @@ import { getActivityData } from "./activity.queries";
 import { getClientsData } from "./clients.queries";
 import { getRecommendationsData } from "./recommendations.queries";
 import { getArticlesData } from "./articles.queries";
+import { getCertificatesData } from "./certificates.queries";
 
 export async function getAdminHomeData() {
   const [
@@ -23,6 +24,7 @@ export async function getAdminHomeData() {
     sanitizedClientsData,
     sanitizedRecommendationsData,
     sanitizedArticlesData,
+    sanitizedCertificatesData,
   ] = await Promise.all([
     getHeroData(),
     getStatsData(),
@@ -35,6 +37,7 @@ export async function getAdminHomeData() {
     getClientsData(),
     getRecommendationsData(),
     getArticlesData(),
+    getCertificatesData(),
   ]);
 
   return {
@@ -49,6 +52,7 @@ export async function getAdminHomeData() {
     sanitizedConnectTrainingData,
     sanitizedActivityData,
     sanitizedClientsData,
+    sanitizedCertificatesData,
   };
 }
 
@@ -63,3 +67,4 @@ export * from "./activity.queries";
 export * from "./clients.queries";
 export * from "./recommendations.queries";
 export * from "./articles.queries";
+export * from "./certificates.queries";

@@ -24,9 +24,11 @@ import {
   updateClientsAction,
   updateArticlesAction,
   updateRecommendationsAction,
+  updateCertificatesAction,
 } from "./actions";
 import { ArticlesForm } from "./_components/ArticlesForm";
 import { RecommendationsForm } from "./_components/RecommendationsForm";
+import { CertificatesForm } from "./_components/CertificatesForm";
 
 export default async function HomeAdminPage() {
   const supabase = await createClient();
@@ -50,6 +52,7 @@ export default async function HomeAdminPage() {
     sanitizedConnectTrainingData,
     sanitizedActivityData,
     sanitizedClientsData,
+    sanitizedCertificatesData,
   } = await getAdminHomeData();
 
   return (
@@ -104,6 +107,12 @@ export default async function HomeAdminPage() {
           <ActivityHighlightsForm
             initialData={sanitizedActivityData}
             onSave={updateActivityAction}
+          />
+        </section>
+        <section id="certificates-section">
+          <CertificatesForm
+            initialData={sanitizedCertificatesData}
+            onSave={updateCertificatesAction}
           />
         </section>
         <section id="clients-section">

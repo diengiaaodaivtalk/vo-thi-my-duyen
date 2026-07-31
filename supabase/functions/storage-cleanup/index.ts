@@ -16,11 +16,23 @@ interface ReportDetail {
 }
 
 const CLEANUP_CONFIG: CleanupConfig[] = [
-  { bucket: "hero-images", targets: [{ table: "HeroConfig", column: "bgUrl" }] },
+  {
+    bucket: "hero-images",
+    targets: [{ table: "HeroConfig", column: "bgUrl" }],
+  },
   { bucket: "stat-images", targets: [{ table: "Stat", column: "iconSrc" }] },
-  { bucket: "profile-images", targets: [{ table: "ProfileConfig", column: "avatarUrl" }] },
-  { bucket: "expertise-images", targets: [{ table: "Expertise", column: "icon" }] },
-  { bucket: "services-images", targets: [{ table: "ServiceItem", column: "img" }] },
+  {
+    bucket: "profile-images",
+    targets: [{ table: "ProfileConfig", column: "avatarUrl" }],
+  },
+  {
+    bucket: "expertise-images",
+    targets: [{ table: "Expertise", column: "icon" }],
+  },
+  {
+    bucket: "services-images",
+    targets: [{ table: "ServiceItem", column: "img" }],
+  },
   {
     bucket: "media-core",
     targets: [
@@ -29,8 +41,14 @@ const CLEANUP_CONFIG: CleanupConfig[] = [
       { table: "ConnectTrainingConfig", column: "logoIcon" },
     ],
   },
-  { bucket: "media-flags", targets: [{ table: "MediaCountry", column: "flag" }] },
-  { bucket: "media-highlights", targets: [{ table: "MediaHighlight", column: "img" }] },
+  {
+    bucket: "media-flags",
+    targets: [{ table: "MediaCountry", column: "flag" }],
+  },
+  {
+    bucket: "media-highlights",
+    targets: [{ table: "MediaHighlight", column: "img" }],
+  },
   { bucket: "media-tv", targets: [{ table: "MediaTvStation", column: "src" }] },
   {
     bucket: "media-press",
@@ -39,9 +57,18 @@ const CLEANUP_CONFIG: CleanupConfig[] = [
       { table: "MediaPressItem", column: "article" },
     ],
   },
-  { bucket: "social-icons", targets: [{ table: "SocialLink", column: "iconImg" }] },
-  { bucket: "training-icons", targets: [{ table: "TrainingProgram", column: "icon" }] },
-  { bucket: "activity-images", targets: [{ table: "ActivityImage", column: "src" }] },
+  {
+    bucket: "social-icons",
+    targets: [{ table: "SocialLink", column: "iconImg" }],
+  },
+  {
+    bucket: "training-icons",
+    targets: [{ table: "TrainingProgram", column: "icon" }],
+  },
+  {
+    bucket: "activity-images",
+    targets: [{ table: "ActivityImage", column: "src" }],
+  },
   { bucket: "client-logos", targets: [{ table: "ClientLogo", column: "src" }] },
   {
     bucket: "meta-data",
@@ -51,11 +78,30 @@ const CLEANUP_CONFIG: CleanupConfig[] = [
     ],
   },
   { bucket: "article-images", targets: [{ table: "Article", column: "img" }] },
-  { bucket: "article-pages", targets: [{ table: "ArticlePage", column: "src" }] },
-  { bucket: "events-images", targets: [{ table: "EventItem", column: "coverImg" }] },
-  { bucket: "events-content-images", targets: [{ table: "EventItem", column: "contentHtmlVi" }] },
-  { bucket: "events-author-avatars", targets: [{ table: "EventItem", column: "authorAvatar" }] },
-  { bucket: "recommendation-avatars", targets: [{ table: "RecommendationItem", column: "avatar" }] },
+  {
+    bucket: "article-pages",
+    targets: [{ table: "ArticlePage", column: "src" }],
+  },
+  {
+    bucket: "events-images",
+    targets: [{ table: "EventItem", column: "coverImg" }],
+  },
+  {
+    bucket: "events-content-images",
+    targets: [{ table: "EventItem", column: "contentHtmlVi" }],
+  },
+  {
+    bucket: "events-author-avatars",
+    targets: [{ table: "EventItem", column: "authorAvatar" }],
+  },
+  {
+    bucket: "recommendation-avatars",
+    targets: [{ table: "RecommendationItem", column: "avatar" }],
+  },
+  {
+    bucket: "certificate-images",
+    targets: [{ table: "CertificateItem", column: "img" }],
+  },
 ];
 
 Deno.serve(async () => {
@@ -117,6 +163,9 @@ Deno.serve(async () => {
     });
   } catch (err: unknown) {
     const errorMessage = err instanceof Error ? err.message : "Unknown error";
-    return new Response(JSON.stringify({ success: false, error: errorMessage }), { status: 500 });
+    return new Response(
+      JSON.stringify({ success: false, error: errorMessage }),
+      { status: 500 },
+    );
   }
 });

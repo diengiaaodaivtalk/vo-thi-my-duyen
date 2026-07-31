@@ -50,6 +50,7 @@ const NAV_ITEMS = [
       { label: "Bài viết đã xuất bản", targetId: "articles-section" },
       { label: "Đào tạo & Kết nối", targetId: "connect-training-section" },
       { label: "Hình ảnh hoạt động", targetId: "activity-section" },
+      { label: "Chứng nhận", targetId: "certificates-section" },
       { label: "Đối tác & Khách hàng chiến lược", targetId: "clients-section" },
     ],
   },

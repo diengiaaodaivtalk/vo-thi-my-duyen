@@ -10,3 +10,4 @@ export * from "./articles.actions";
 export * from "./connect-training.actions";
 export * from "./activity.actions";
 export * from "./clients.actions";
+export * from "./certificates.actions";

@@ -10,6 +10,7 @@ import { ConnectAndTraining } from "@/app/(public)/(home)/_components/ConnectAnd
 import { ActivityHighlights } from "@/app/(public)/(home)/_components/ActivityHighlights";
 import { StrategicClients } from "@/app/(public)/(home)/_components/StrategicClients";
 import { Events } from "@/app/(public)/(home)/_components/Events";
+import { Certificates } from "@/app/(public)/(home)/_components/Certificates";
 
 export default function Home() {
   return (
@@ -37,6 +38,7 @@ export default function Home() {
       <div id="clients">
         <StrategicClients />
       </div>
+      <Certificates />
       <Events />
     </div>
   );
