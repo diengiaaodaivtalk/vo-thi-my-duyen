@@ -92,18 +92,24 @@ export interface ArticlePageParam {
   imageFile?: File | null;
 }
 
+interface ArticlePageItem {
+  id?: string;
+  src: string;
+  imageFile?: File | null;
+}
+
 export interface ArticleItemParam {
   id?: string;
   row: number;
   title: string;
   description: string;
-  categoryId: string;
+  categoryIds: string[];
   date: string;
   publisher: string;
   link: string;
   img: string;
   imageFile?: File | null;
-  pages: ArticlePageParam[];
+  pages: ArticlePageItem[];
 }
 
 export interface ProgramParam {

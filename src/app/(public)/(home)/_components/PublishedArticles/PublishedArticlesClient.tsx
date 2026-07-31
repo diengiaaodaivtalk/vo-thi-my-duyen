@@ -15,7 +15,8 @@ export interface Article {
   id: string;
   title: string;
   description: string;
-  categoryId: string;
+  categoryIds: string[];
+  categories?: ArticleCategory[];
   date: string;
   publisher: string;
   link: string;
@@ -48,15 +49,16 @@ export function PublishedArticlesClient({
   const filteredRow1 =
     selectedCategory === "all"
       ? row1Articles
-      : row1Articles.filter((item) => item.categoryId === selectedCategory);
+      : row1Articles.filter((item) =>
+          item.categoryIds?.includes(selectedCategory),
+        );
 
   const filteredRow2 =
     selectedCategory === "all"
       ? row2Articles
-      : row2Articles.filter((item) => item.categoryId === selectedCategory);
-
-  const getCategoryLabel = (categoryId: string) =>
-    categories.find((c) => c.id === categoryId)?.vi || "";
+      : row2Articles.filter((item) =>
+          item.categoryIds?.includes(selectedCategory),
+        );
 
   const handleReadArticle = (article: Article) => {
     if (!article.pages || article.pages.length === 0) {
@@ -121,13 +123,13 @@ export function PublishedArticlesClient({
         <ArticleCarouselRow
           key={`row1-${selectedCategory}`}
           articles={filteredRow1}
-          getCategoryLabel={getCategoryLabel}
+          allCategories={categories}
           onRead={handleReadArticle}
         />
         <ArticleCarouselRow
           key={`row2-${selectedCategory}`}
           articles={filteredRow2}
-          getCategoryLabel={getCategoryLabel}
+          allCategories={categories}
           onRead={handleReadArticle}
         />
       </div>
@@ -135,7 +137,7 @@ export function PublishedArticlesClient({
       {activeArticle && (
         <FlipbookModal
           article={activeArticle}
-          categoryLabel={getCategoryLabel(activeArticle.categoryId)}
+          allCategories={categories}
           onClose={() => setActiveArticle(null)}
         />
       )}
@@ -145,11 +147,11 @@ export function PublishedArticlesClient({
 
 function ArticleCarouselRow({
   articles,
-  getCategoryLabel,
+  allCategories,
   onRead,
 }: {
   articles: Article[];
-  getCategoryLabel: (categoryId: string) => string;
+  allCategories: ArticleCategory[];
   onRead: (article: Article) => void;
 }) {
   const buildBase = (arr: Article[]) => {
@@ -237,7 +239,7 @@ function ArticleCarouselRow({
             <ArticleCard
               key={`${article.id}-${index}`}
               article={article}
-              categoryLabel={getCategoryLabel(article.categoryId)}
+              allCategories={allCategories}
               onRead={() => onRead(article)}
             />
           ))}
@@ -256,13 +258,17 @@ function ArticleCarouselRow({
 
 function ArticleCard({
   article,
-  categoryLabel,
+  allCategories,
   onRead,
 }: {
   article: Article;
-  categoryLabel: string;
+  allCategories: ArticleCategory[];
   onRead: () => void;
 }) {
+  const matchedCategories = article.categories?.length
+    ? article.categories
+    : allCategories.filter((c) => article.categoryIds?.includes(c.id));
+
   return (
     <div className="shrink-0 w-full sm:w-[calc((100%-16px)/2)] lg:w-[calc((100%-48px)/3)] bg-white rounded-lg border border-[#e2d5c3]/70 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow overflow-hidden">
       <div className="relative w-full aspect-video overflow-hidden mb-4">
@@ -274,9 +280,9 @@ function ArticleCard({
             className="object-cover"
           />
         )}
-        {categoryLabel && (
+        {matchedCategories[0] && (
           <div className="absolute bottom-3 left-3 bg-[#c29b57] text-white text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-md shadow-sm">
-            {categoryLabel}
+            {matchedCategories[0].vi}
           </div>
         )}
       </div>
@@ -312,11 +318,11 @@ function ArticleCard({
 
 function FlipbookModal({
   article,
-  categoryLabel,
+  allCategories,
   onClose,
 }: {
   article: Article;
-  categoryLabel: string;
+  allCategories: ArticleCategory[];
   onClose: () => void;
 }) {
   const pages =
@@ -328,6 +334,10 @@ function FlipbookModal({
 
   const step = isDoublePage ? 2 : 1;
   const totalPages = pages.length;
+
+  const matchedCategories = article.categories?.length
+    ? article.categories
+    : allCategories.filter((c) => article.categoryIds?.includes(c.id));
 
   const handlePrevPage = useCallback(() => {
     setCurrentPage((prev) => Math.max(0, prev - step));
@@ -374,10 +384,10 @@ function FlipbookModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-md p-2 sm:p-8">
       <div className="relative w-full h-full max-h-[90vh] flex flex-col bg-[#0a1b35] rounded-2xl overflow-hidden shadow-2xl border border-[#e2d5c3]/30">
         <div className="flex items-center justify-between px-4 sm:px-6 py-3 bg-[#0a1b35] border-b border-[#e2d5c3]/20 text-white">
-          <div className="flex items-center gap-3 truncate pr-4">
-            {categoryLabel && (
+          <div className="flex items-center gap-2 truncate pr-4">
+            {matchedCategories[0] && (
               <span className="px-2.5 py-0.5 rounded text-[11px] font-semibold bg-[#c29b57] text-white shrink-0">
-                {categoryLabel}
+                {matchedCategories[0].vi}
               </span>
             )}
             <h3

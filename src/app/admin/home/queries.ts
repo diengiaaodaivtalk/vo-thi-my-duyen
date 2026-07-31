@@ -63,7 +63,14 @@ export async function getAdminHomeData() {
     }),
     prisma.article.findMany({
       orderBy: { order: "asc" },
-      include: { pages: { orderBy: { order: "asc" } } },
+      include: {
+        pages: { orderBy: { order: "asc" } },
+        categories: {
+          include: {
+            category: true,
+          },
+        },
+      },
     }),
   ]);
 
@@ -165,12 +172,18 @@ export async function getAdminHomeData() {
     row: a.row,
     title: a.title || "",
     description: a.description || "",
-    categoryId: a.categoryId || "",
+    categoryIds: (a.categories || []).map((item) => {
+      const catObj = item as Record<string, unknown>;
+      if (catObj.category && typeof catObj.category === "object") {
+        return (catObj.category as Record<string, unknown>).id as string;
+      }
+      return (catObj.categoryId as string) || "";
+    }),
     date: a.date || "",
     publisher: a.publisher || "",
     link: a.link || "#",
     img: a.img || "",
-    pages: a.pages.map((p) => ({ id: p.id, src: p.src || "" })),
+    pages: (a.pages || []).map((p) => ({ id: p.id, src: p.src || "" })),
   });
 
   const sanitizedArticlesData = {
