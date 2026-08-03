@@ -154,5 +154,6 @@ export interface TabItemParam {
 export interface CertificateItemParam {
   id?: string;
   img: string;
+  originalImg?: string;
   imageFile?: File | null;
 }

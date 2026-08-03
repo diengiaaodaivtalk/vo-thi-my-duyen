@@ -17,6 +17,7 @@ export async function getCertificatesData() {
         items: certificatesConfig.items.map((item) => ({
           id: item.id,
           img: item.img || "",
+          originalImg: item.img || "",
         })),
       }
     : null;

@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { uploadAndCleanStorage } from "@/utils/supabase/storage";
 import { CertificateItemParam } from "../types";
+import { getCertificatesData } from "../queries/certificates.queries";
 
 export async function updateCertificatesAction(
   formData: FormData,
@@ -24,7 +25,7 @@ export async function updateCertificatesAction(
       currentImg = await uploadAndCleanStorage({
         bucketName: "certificate-images",
         newFile: item.imageFile,
-        oldUrl: item.id ? item.img : null,
+        oldUrl: item.id ? item.originalImg || null : null,
       });
     }
     processedItems.push({ img: currentImg || "", order: i });
@@ -64,4 +65,6 @@ export async function updateCertificatesAction(
   }
   revalidatePath("/");
   revalidatePath("/admin");
+
+  return getCertificatesData();
 }

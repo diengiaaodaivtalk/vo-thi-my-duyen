@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, CSSProperties } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { CertificateLightbox } from "./CertificateLightbox";
 
 interface CertificateCarouselItem {
   id?: string;
@@ -18,6 +19,7 @@ export function CertificatesCarousel({
 
   const [currentIndex, setCurrentIndex] = useState(baseItems.length);
   const [isTransitioning, setIsTransitioning] = useState(true);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
   const handlePrev = () => {
@@ -176,16 +178,21 @@ export function CertificatesCarousel({
               key={index}
               className="shrink-0 w-full sm:w-[calc((100%-16px)/2)] lg:w-[calc((100%-48px)/4)] 2xl:w-[calc((100%-64px)/5)]"
             >
-              <div className="relative w-full aspect-3/4 rounded-md overflow-hidden shadow-sm border border-gray-100 bg-white">
+              <button
+                type="button"
+                onClick={() => setLightboxIndex(index % baseItems.length)}
+                aria-label="Xem chứng nhận"
+                className="relative w-full aspect-3/4 rounded-md overflow-hidden shadow-sm border border-gray-100 bg-white cursor-pointer group"
+              >
                 {item.img && (
                   <Image
                     src={item.img}
                     alt="Certificate"
                     fill
-                    className="object-contain p-2"
+                    className="object-contain p-2 transition-transform duration-200 group-hover:scale-105"
                   />
                 )}
-              </div>
+              </button>
             </div>
           ))}
         </div>
@@ -203,6 +210,15 @@ export function CertificatesCarousel({
         <div className="flex items-center justify-center gap-2 mt-6">
           {renderPaginationDots()}
         </div>
+      )}
+
+      {lightboxIndex !== null && (
+        <CertificateLightbox
+          items={baseItems}
+          index={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onNavigate={setLightboxIndex}
+        />
       )}
     </div>
   );
