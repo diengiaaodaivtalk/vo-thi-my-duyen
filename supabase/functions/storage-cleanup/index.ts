@@ -15,6 +15,15 @@ interface ReportDetail {
   errors: unknown;
 }
 
+interface StorageFile {
+  name: string;
+  id?: string;
+  updated_at?: string;
+  created_at?: string;
+  last_accessed_at?: string;
+  metadata?: Record<string, unknown>;
+}
+
 const CLEANUP_CONFIG: CleanupConfig[] = [
   {
     bucket: "hero-images",
@@ -115,11 +124,47 @@ Deno.serve(async () => {
     for (const config of CLEANUP_CONFIG) {
       report[config.bucket] = { deleted: [], errors: null };
 
-      const { data: files, error: listError } = await supabase.storage
-        .from(config.bucket)
-        .list("", { limit: 1000 });
+      // 1. Gom toàn bộ URL đang được sử dụng từ các bảng vào một Set
+      const usedUrls = new Set<string>();
 
-      if (listError || !files || files.length === 0) continue;
+      for (const target of config.targets) {
+        const { data, error } = await supabase
+          .from(target.table)
+          .select(target.column);
+
+        if (!error && data) {
+          (data as Array<Record<string, unknown>>).forEach((row) => {
+            const val = row[target.column];
+            if (val && typeof val === "string") {
+              usedUrls.add(val.trim());
+            }
+          });
+        }
+      }
+
+      // 2. Lấy toàn bộ danh sách file trong bucket (Hỗ trợ phân trang đầy đủ)
+      let files: StorageFile[] = [];
+      let offset = 0;
+      let fetchMore = true;
+
+      while (fetchMore) {
+        const { data: pageFiles, error: listError } = await supabase.storage
+          .from(config.bucket)
+          .list("", { limit: 1000, offset });
+
+        if (listError || !pageFiles || pageFiles.length === 0) {
+          fetchMore = false;
+        } else {
+          files = files.concat(pageFiles as StorageFile[]);
+          if (pageFiles.length < 1000) {
+            fetchMore = false;
+          } else {
+            offset += 1000;
+          }
+        }
+      }
+
+      if (files.length === 0) continue;
 
       const unusedFiles: string[] = [];
 
@@ -128,13 +173,9 @@ Deno.serve(async () => {
 
         let isUsed = false;
 
-        for (const target of config.targets) {
-          const { count, error } = await supabase
-            .from(target.table)
-            .select(target.column, { head: true, count: "exact" })
-            .ilike(target.column, `%${file.name}%`);
-
-          if (!error && count && count > 0) {
+        // Kiểm tra xem URL trong DB có chứa tên file này không
+        for (const url of usedUrls) {
+          if (url.includes(file.name)) {
             isUsed = true;
             break;
           }
@@ -145,6 +186,7 @@ Deno.serve(async () => {
         }
       }
 
+      // 3. Tiến hành xóa các file thực sự không dùng
       if (unusedFiles.length > 0) {
         const { error: deleteError } = await supabase.storage
           .from(config.bucket)
